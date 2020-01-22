@@ -1,4 +1,4 @@
-#RideshareBeta
+# RideshareBeta
 
 Note: Create and source the following `env` file or else database connections wont work.
 
