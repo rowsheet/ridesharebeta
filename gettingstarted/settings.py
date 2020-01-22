@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,6 +29,17 @@ SECRET_KEY = "CHANGE_ME!!!! (P.S. the SECRET_KEY environment variable will be us
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+CSRF_TRUSTED_ORIGINS = [
+    # "localhost",
+    # @TODO Add URLs here.
+]
+
+# Determine deployment environment.
+ENV = "development"
+if "ENV" in os.environ:
+    if os.environ["ENV"] == "production":
+        ENV = "production"
 
 
 # Application definition
@@ -117,3 +129,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
 
 django_heroku.settings(locals())
+
+# Don't require SSL for database in development.
+if ENV == "development":
+    locals()['DATABASES']['default'] = dj_database_url.config(
+        conn_max_age=django_heroku.MAX_CONN_AGE, ssl_require=False)
